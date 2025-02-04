@@ -10,7 +10,7 @@ export const genUpdateStatus = async (token: string): Promise<Response> => {
     body: JSON.stringify({
       profile: {
         status_text: "Focused in Coding",
-        status_emoji: __getRandomEmoji(),
+        status_emoji: ":computer:",
         status_expiration: Math.floor((Date.now() + 5 * 60 * 1000) / 1000),
       },
     }),
@@ -31,34 +31,3 @@ export const genUpdateSnooze = async (token: string): Promise<Response> => {
   });
 };
 
-const __getRandomEmoji = () => {
-  const focusEmojis = [
-    ":fire:",
-    ":muscle:",
-    ":dart:",
-    ":rocket:",
-    ":hourglass_flowing_sand:",
-    ":brain:",
-    ":books:",
-    ":bulb:",
-    ":man-technologist:",
-    ":woman-technologist:",
-    ":seedling:",
-    ":chart_with_upwards_trend:",
-    ":alarm_clock:",
-    ":stopwatch:",
-    ":mage:",
-    ":sparkles:",
-    ":weight_lifter:",
-    ":battery:",
-    ":hammer_and_wrench:",
-  ];
-  const randomEmoji =
-    focusEmojis[
-      Math.min(
-        Math.floor(Math.random() * focusEmojis.length),
-        focusEmojis.length - 1
-      )
-    ];
-  return randomEmoji;
-};
