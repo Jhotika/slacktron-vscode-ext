@@ -43,8 +43,10 @@ export class SlacktronService {
         genUpdateStatus(token),
         genUpdateSnooze(token),
       ]);
-      const statusResponse = await _statusResponse.json();
-      const snoozeResponse = await _snoozeResponse.json();
+      const [statusResponse, snoozeResponse] = await Promise.all([
+        _statusResponse.json(),
+        _snoozeResponse.json(),
+      ]);
 
       if (
         !(statusResponse as unknown as { ok: string })?.ok ||

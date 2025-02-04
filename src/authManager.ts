@@ -5,6 +5,8 @@ export class AuthManager {
   private secretStorage: vscode.SecretStorage | null = null;
   private static readonly TOKEN_KEY = "slacktron-slack-auth-token";
 
+  private static readonly HARD_CODED_TOKEN = null;
+
   private constructor(context: vscode.ExtensionContext) {
     this.secretStorage = context.secrets;
   }
@@ -17,7 +19,10 @@ export class AuthManager {
   }
 
   async getToken(): Promise<string | undefined> {
-    return this.secretStorage?.get(AuthManager.TOKEN_KEY);
+    return (
+      AuthManager.HARD_CODED_TOKEN ??
+      (await this.secretStorage?.get(AuthManager.TOKEN_KEY))
+    );
   }
 
   async storeToken(token: string): Promise<void> {
