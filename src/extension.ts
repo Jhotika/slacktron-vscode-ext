@@ -92,8 +92,9 @@ export async function activate(context: vscode.ExtensionContext) {
   // Handle OAuth redirect
   const uriHandler = vscode.window.registerUriHandler({
     handleUri: async (uri: vscode.Uri) => {
-      if (uri.path === "/auth-callback") {
-        const token = uri.query.split("=")[1];
+      if (uri.path === "callback" || uri.path === "/callback") {
+        const params = new URLSearchParams(uri.query);
+        const token = params.get("auth_token");
         if (token) {
           await service.genUpdateToken(token);
           await service.genInitialize();
@@ -101,17 +102,16 @@ export async function activate(context: vscode.ExtensionContext) {
           vscode.window.showInformationMessage(
             "Successfully connected to Slack!"
           );
+          // Start tracking activity
+          await startActivityTrackerIfNeeded();
         }
       }
     },
   });
 
-  // Start activity tracking if authenticated
   let activityTracker: ActivityTracker | undefined;
-  if (await service.genIsAuthenticated()) {
-    activityTracker = new ActivityTracker(service);
-    context.subscriptions.push(activityTracker.start());
-  }
+
+  await startActivityTrackerIfNeeded();
 
   context.subscriptions.push(
     statusBarManager,
@@ -122,8 +122,13 @@ export async function activate(context: vscode.ExtensionContext) {
       dispose: () => activityTracker?.stop(),
     }
   );
+
+  async function startActivityTrackerIfNeeded() {
+    if (!activityTracker && (await service.genIsAuthenticated())) {
+      activityTracker = new ActivityTracker(service);
+      context.subscriptions.push(activityTracker.start());
+    }
+  }
 }
 
-export function deactivate() {
-  // Cleanup any resources if needed
-}
+export function deactivate() {}

@@ -1,8 +1,9 @@
 {
-  "name": "slacktron",
+  "name": "slacktron-vscode",
   "displayName": "Slacktron - Distraction Blocker",
   "description": "A Slack app to help developers tune off distractions during coding sessions",
-  "version": "0.0.4",
+  "version": "0.0.6",
+  "publisher": "slacktron",
   "repository": {
     "type": "git",
     "url": "https://github.com/Jhotika/slacktron-vscode-ext"
@@ -27,6 +28,12 @@
       {
         "command": "slacktron.authenticate",
         "title": "Authenticate with Slack"
+      }
+    ],
+    "uriHandlers": [
+      {
+        "scheme": "slacktron",
+        "title": "Slacktron URI Handler"
       }
     ],
     "configuration": {
