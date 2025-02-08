@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { CHECK_INTERVAL, INACTIVE_THRESHOLD, SLACK_URL } from "./config";
 import { SlacktronService } from "./service";
+import { SlacktronViewProvider } from "./views/SlacktronViewProvider";
 
 class StatusBarManager {
   private statusBarItem: vscode.StatusBarItem;
@@ -112,12 +113,13 @@ export async function activate(context: vscode.ExtensionContext) {
   let activityTracker: ActivityTracker | undefined;
 
   await startActivityTrackerIfNeeded();
-
+  const provider = new SlacktronViewProvider(context.extensionUri);
   context.subscriptions.push(
     statusBarManager,
     loginCommand,
     logoutCommand,
     uriHandler,
+    vscode.window.registerWebviewViewProvider('slacktron-view', provider),
     {
       dispose: () => activityTracker?.stop(),
     }
