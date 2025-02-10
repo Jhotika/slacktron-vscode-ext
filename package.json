@@ -20,6 +20,24 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "slacktron-sidebar",
+          "title": "Slacktron",
+          "icon": "resources/heart.svg"
+        }
+      ]
+    },
+    "views": {
+      "slacktron-sidebar": [
+        {
+          "id": "slacktron-view",
+          "name": "Start Your Day with Slacktron",
+          "type": "webview"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "slacktron.installSlack",
